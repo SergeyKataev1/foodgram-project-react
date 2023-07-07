@@ -6,10 +6,10 @@ from django.core.validators import MinValueValidator, RegexValidator
 User = get_user_model()
 
 class Tag(models.Model):
-    name = models.CharField('Название',
+    name = models.CharField(verbose_name='Название',
                             max_length=200,
                             unique=True)
-    color = models.CharField('Цвет',
+    color = models.CharField(verbose_name='Цвет',
                              max_length=7,
                              unique=True,
                              validators=[
@@ -37,10 +37,10 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField('Название',
+    name = models.CharField(verbose_name='Название',
                             max_length=200,
                             unique=True)
-    measurement_unit = models.CharField('Единица измерения',
+    measurement_unit = models.CharField(verbose_name='Единица измерения',
                                         max_length=200)
 
     class Meta:
@@ -61,16 +61,16 @@ class Recipe(models.Model):
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name='recipes')
-    name = models.CharField('Название',
+    name = models.CharField(verbose_name='Название',
                             max_length=200)
-    image = models.ImageField('Изображение',
+    image = models.ImageField(verbose_name='Изображение',
                               upload_to='recipe/')
-    text = models.CharField('Текст',
+    text = models.CharField(verbose_name='Текст',
                             max_length=1024)
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient')
     tags = models.ManyToManyField(Tag)
-    cooking_time = models.IntegerField('Время приготовления в минутах',
+    cooking_time = models.IntegerField(verbose_name='Время приготовления в минутах',
                                        validators=[
                                            MinValueValidator(1)])
 
@@ -88,7 +88,7 @@ class RecipeIngredient(models.Model):
                                    on_delete=models.CASCADE)
     amount = models.IntegerField(validators=[
         MinValueValidator(1,
-                          message='Мин. количество ингредиента - 1')
+                          message='Мин. количество ингредиента < 1')
     ])
 
     class Meta:
