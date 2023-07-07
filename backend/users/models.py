@@ -39,4 +39,4 @@ class Subscribe(models.Model):
 
     def clean(self):
         if self.user == self.author:
-            raise ValidationError('Подписка на самого себя невозможна')
+            raise ValidationError('Error: Подписка на самого себя!')
