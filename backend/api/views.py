@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
@@ -8,7 +7,7 @@ from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.viewsets import (ModelViewSet, 
+from rest_framework.viewsets import (ModelViewSet,
                                      ReadOnlyModelViewSet)
 
 from django.contrib.auth import get_user_model
@@ -25,14 +24,14 @@ from users.models import Subscribe
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 from api.serializers import (CustomUserCreateSerializer,
-                          CustomUserSerializer,
-                          FavoriteSerializer,
-                          IngredientSerializer,
-                          RecipeReadSerializer,
-                          RecipeSerializer,
-                          ShoppingCartSerializer,
-                          SubscribeSerializer,
-                          TagSerializer)
+                             CustomUserSerializer,
+                             FavoriteSerializer,
+                             IngredientSerializer,
+                             RecipeReadSerializer,
+                             RecipeSerializer,
+                             ShoppingCartSerializer,
+                             SubscribeSerializer,
+                             TagSerializer)
 
 User = get_user_model()
 
