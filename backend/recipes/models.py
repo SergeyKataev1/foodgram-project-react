@@ -5,6 +5,7 @@ from django.core.validators import MinValueValidator, RegexValidator
 
 User = get_user_model()
 
+
 class Tag(models.Model):
     name = models.CharField(verbose_name='Название',
                             max_length=200,
@@ -70,9 +71,9 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient')
     tags = models.ManyToManyField(Tag)
-    cooking_time = models.IntegerField(verbose_name='Время приготовления в минутах',
-                                       validators=[
-                                           MinValueValidator(1)])
+    cooking_time = models.IntegerField(
+        verbose_name='Время приготовления в минутах',
+        validators=[MinValueValidator(1)])
 
     class Meta:
         ordering = ('name',)

@@ -14,23 +14,23 @@ from rest_framework.viewsets import (ModelViewSet,
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import FilterSet, filters
 from rest_framework.filters import SearchFilter
-from recipes.models import (Favorite, 
-                            Ingredient, 
-                            Recipe, 
+from recipes.models import (Favorite,
+                            Ingredient,
+                            Recipe,
                             RecipeIngredient,
-                            ShoppingCart, 
+                            ShoppingCart,
                             Tag)
 from users.models import Subscribe
 
 from rest_framework.permissions import SAFE_METHODS, BasePermission
 
-from api.serializers import (CustomUserCreateSerializer, 
+from api.serializers import (CustomUserCreateSerializer,
                           CustomUserSerializer,
-                          FavoriteSerializer, 
+                          FavoriteSerializer,
                           IngredientSerializer,
-                          RecipeReadSerializer, 
+                          RecipeReadSerializer,
                           RecipeSerializer,
-                          ShoppingCartSerializer, 
+                          ShoppingCartSerializer,
                           SubscribeSerializer,
                           TagSerializer)
 
@@ -74,6 +74,7 @@ class AuthorTagFilter(FilterSet):
 class IngredientSearchFilter(SearchFilter):
     search_param = 'name'
 
+
 class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
     serializer_class = CustomUserCreateSerializer
@@ -92,7 +93,7 @@ class CustomUserViewSet(UserViewSet):
         if request.method == 'POST':
             if user == author:
                 return Response({
-                    'errors': 'Вы не можете подписываться на самого себя'
+                    'errors': 'Подписка на самого себя запрещена'
                 }, status=status.HTTP_400_BAD_REQUEST)
             if Subscribe.objects.filter(user=user, author=author).exists():
                 return Response({
@@ -104,7 +105,8 @@ class CustomUserViewSet(UserViewSet):
             })
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        the_subscribe = get_object_or_404(Subscribe, user=user,
+        the_subscribe = get_object_or_404(Subscribe,
+                                          user=user,
                                           author=author)
         the_subscribe.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -114,9 +116,9 @@ class CustomUserViewSet(UserViewSet):
         user = request.user
         queryset = Subscribe.objects.filter(user=user)
         pages = self.paginate_queryset(queryset)
-        serializer = SubscribeSerializer(pages, context={
-            'request': request,
-        }, many=True)
+        serializer = SubscribeSerializer(pages,
+                                         context={'request': request, },
+                                         many=True)
         return self.get_paginated_response(serializer.data)
 
 
