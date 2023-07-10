@@ -181,7 +181,7 @@ class RecipeSerializer(ModelSerializer):
         ingredients = data.get('ingredients')
         if not ingredients:
             raise ValidationError({
-                'ingredients': 'Нужен хоть один ингридиент для рецепта'})
+                'ingredients': 'Нужен минимум один ингридиент для рецепта'})
         ingredient_list = []
         for ingredient_item in ingredients:
             if ingredient_item in ingredient_list:
@@ -190,8 +190,7 @@ class RecipeSerializer(ModelSerializer):
             ingredient_list.append(ingredient_item)
             if int(ingredient_item['amount']) < 0:
                 raise ValidationError({
-                    'ingredients': ('Убедитесь, что значение количества '
-                                    'ингредиента больше 0')
+                    'ingredients': ('Ингридиент не может быть равен 0')
                 })
         data['ingredients'] = ingredients
         return data
@@ -230,7 +229,7 @@ class FavoriteSerializer(ModelSerializer):
         user = data['user']
         if user.favorite.filter(recipe=data['recipe']).exists():
             raise ValidationError(
-                'Рецепт уже был добавлен в избранное'
+                'Рецепт уже добавлен в избранное'
             )
         return data
 
@@ -251,7 +250,7 @@ class ShoppingCartSerializer(ModelSerializer):
         user = data['user']
         if user.shoppingcart.filter(recipe=data['recipe']).exists():
             raise ValidationError(
-                'Рецепт уже был добавлен в корзину'
+                'Рецепт уже добавлен в корзину'
             )
         return data
 
