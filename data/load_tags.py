@@ -1,6 +1,5 @@
-from django.core.management import BaseCommand
-
 from backend.recipes.models import Tag
+from django.core.management import BaseCommand
 
 
 class Command(BaseCommand):
