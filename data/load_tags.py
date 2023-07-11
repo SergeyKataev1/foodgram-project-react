@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'Создаем tags'
+    help = 'Создаем Tags'
 
     def handle(self, *args, **kwargs):
         data = [
