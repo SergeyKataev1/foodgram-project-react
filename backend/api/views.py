@@ -85,7 +85,7 @@ class CustomUserViewSet(UserViewSet):
             return CustomUserSerializer
         return super().get_serializer_class()
 
-    @action(detail=True, methods=['post', 'delete'])
+    @action(detail=True, methods=['POST', 'DELETE'])
     def subscribe(self, request, id):
         user = request.user
         author = get_object_or_404(User, id=id)
@@ -104,12 +104,12 @@ class CustomUserViewSet(UserViewSet):
                 'request': request
             })
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        the_subscribe = get_object_or_404(Subscribe,
-                                          user=user,
-                                          author=author)
-        the_subscribe.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if request.method == 'DELETE':
+            the_subscribe = get_object_or_404(Subscribe,
+                                              user=user,
+                                              author=author)
+            the_subscribe.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False)
     def subscriptions(self, request):
@@ -169,15 +169,15 @@ class RecipeViewSet(ModelViewSet):
     def favorite(self, request, pk):
         if request.method == 'POST':
             return self.add_obj(request, FavoriteSerializer, pk)
-
-        return self.delete_obj(request, Favorite, pk)
+        if request.method == 'DELETE':
+            return self.delete_obj(request, Favorite, pk)
 
     @action(detail=True, methods=['POST', 'DELETE'])
     def shopping_cart(self, request, pk):
         if request.method == 'POST':
             return self.add_obj(request, ShoppingCartSerializer, pk)
-
-        return self.delete_obj(request, ShoppingCart, pk)
+        if request.method == 'DELETE':
+            return self.delete_obj(request, ShoppingCart, pk)
 
     def create_shopping_cart(self, ingredients):
         shopping_list = 'Купить в магазине:'
