@@ -1,5 +1,4 @@
 from rest_framework.pagination import PageNumberPagination
-from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
