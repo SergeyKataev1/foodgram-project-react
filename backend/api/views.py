@@ -14,8 +14,7 @@ from users.models import Subscribe
 from api.filters import AuthorTagFilter, IngredientSearchFilter
 from api.paginations import LimitPageNumberPagination
 from api.permissions import IsAuthorOrReadOnly
-from api.serializers import (CustomUserCreateSerializer,
-                             CustomUserSerializer,
+from api.serializers import (CustomUserCreateSerializer, CustomUserSerializer,
                              FavoriteSerializer, IngredientSerializer,
                              RecipeReadSerializer, RecipeSerializer,
                              ShoppingCartSerializer, SubscribeSerializer,

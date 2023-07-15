@@ -104,6 +104,7 @@ class IngredientSerializer(ModelSerializer):
 
 
 class RecipeIngredientSerializer(ModelSerializer):
+
     id = IntegerField(source='ingredient.id')
     name = ReadOnlyField(source='ingredient.name')
     measurement_unit = ReadOnlyField(
@@ -115,6 +116,7 @@ class RecipeIngredientSerializer(ModelSerializer):
 
 
 class RecipeReadSerializer(ModelSerializer):
+
     tags = TagSerializer(read_only=True, many=True)
     author = CustomUserSerializer(read_only=True)
     ingredients = RecipeIngredientSerializer(source='ingredienttorecipe',
@@ -153,6 +155,7 @@ class RecipeShortShowSerializer(ModelSerializer):
 
 
 class RecipeSerializer(ModelSerializer):
+
     ingredients = RecipeIngredientSerializer(many=True)
     tags = PrimaryKeyRelatedField(many=True,
                                   queryset=Tag.objects.all())
