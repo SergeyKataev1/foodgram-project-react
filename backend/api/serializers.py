@@ -12,7 +12,8 @@ from users.models import Subscribe
 User = get_user_model()
 
 
-class CustomUserSerializer(UserSerializer):
+class ExtendedUserSerializer(UserSerializer):
+
     is_subscribed = SerializerMethodField()
 
     class Meta:
@@ -28,7 +29,7 @@ class CustomUserSerializer(UserSerializer):
                                         author=obj.id).exists()
 
 
-class CustomUserCreateSerializer(UserCreateSerializer):
+class ExtendedUserCreateSerializer(UserCreateSerializer):
 
     class Meta:
         model = User
@@ -52,6 +53,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 
 class SubscribeSerializer(ModelSerializer):
+
     email = ReadOnlyField(source='author.email')
     id = ReadOnlyField(source='author.id')
     username = ReadOnlyField(source='author.username')
@@ -113,7 +115,7 @@ class RecipeIngredientSerializer(ModelSerializer):
 
 class RecipeReadSerializer(ModelSerializer):
     tags = TagSerializer(read_only=True, many=True)
-    author = CustomUserSerializer(read_only=True)
+    author = ExtendedUserSerializer(read_only=True)
     ingredients = RecipeIngredientSerializer(source='ingredienttorecipe',
                                              read_only=True,
                                              many=True)
@@ -153,7 +155,7 @@ class RecipeSerializer(ModelSerializer):
     ingredients = RecipeIngredientSerializer(many=True)
     tags = PrimaryKeyRelatedField(many=True,
                                   queryset=Tag.objects.all())
-    author = CustomUserSerializer(read_only=True)
+    author = ExtendedUserSerializer(read_only=True)
     image = Base64ImageField()
 
     class Meta:
