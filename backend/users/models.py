@@ -4,6 +4,7 @@ from rest_framework.validators import ValidationError
 
 
 class CustomUser(AbstractUser):
+
     email = models.EmailField(max_length=254, unique=True)
     username = models.CharField(max_length=254, unique=True)
     first_name = models.CharField(max_length=150)
@@ -20,6 +21,7 @@ class CustomUser(AbstractUser):
 
 
 class Subscribe(models.Model):
+
     user = models.ForeignKey(CustomUser,
                              on_delete=models.CASCADE,
                              related_name='subscriber')
