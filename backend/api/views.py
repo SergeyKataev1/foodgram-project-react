@@ -1,4 +1,3 @@
-from rest_framework.pagination import PageNumberPagination
 from django.db.models import Sum
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -10,9 +9,6 @@ from rest_framework.viewsets import (ModelViewSet,
                                      ReadOnlyModelViewSet)
 
 from django.contrib.auth import get_user_model
-from django_filters.rest_framework import (FilterSet,
-                                           filters)
-from rest_framework.filters import SearchFilter
 from recipes.models import (Favorite,
                             Ingredient,
                             Recipe,
@@ -20,8 +16,6 @@ from recipes.models import (Favorite,
                             ShoppingCart,
                             Tag)
 from users.models import Subscribe
-
-from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 from api.serializers import (CustomUserCreateSerializer,
                              CustomUserSerializer,
@@ -32,46 +26,13 @@ from api.serializers import (CustomUserCreateSerializer,
                              ShoppingCartSerializer,
                              SubscribeSerializer,
                              TagSerializer)
+from api.filters import (IngredientSearchFilter,
+                         AuthorTagFilter)
+from api.paginations import LimitPageNumberPagination
+from api.permissions import IsAuthorOrReadOnly
+
 
 User = get_user_model()
-
-
-class IsAuthorOrReadOnly(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return request.method in SAFE_METHODS or obj.author == request.user
-
-
-class LimitPageNumberPagination(PageNumberPagination):
-    page_size = 6
-    page_size_query_param = 'limit'
-
-
-class AuthorTagFilter(FilterSet):
-    tags = filters.ModelMultipleChoiceFilter(field_name='tags__slug',
-                                             to_field_name='slug',
-                                             queryset=Tag.objects.all())
-    author = filters.ModelChoiceFilter(queryset=User.objects.all())
-    is_favorited = filters.BooleanFilter(method='filter_is_favorited')
-    is_in_shopping_cart = filters.BooleanFilter(
-        method='filter_is_in_shopping_cart')
-
-    def filter_is_favorited(self, queryset, name, value):
-        if value and not self.request.user.is_anonymous:
-            return queryset.filter(favorite__user=self.request.user)
-        return queryset
-
-    def filter_is_in_shopping_cart(self, queryset, name, value):
-        if value and not self.request.user.is_anonymous:
-            return queryset.filter(shoppingcart__user=self.request.user)
-        return queryset
-
-    class Meta:
-        model = Recipe
-        fields = ('tags', 'author')
-
-
-class IngredientSearchFilter(SearchFilter):
-    search_param = 'name'
 
 
 class CustomUserViewSet(UserViewSet):
