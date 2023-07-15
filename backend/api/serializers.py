@@ -12,7 +12,7 @@ from users.models import Subscribe
 User = get_user_model()
 
 
-class ExtendedUserSerializer(UserSerializer):
+class CustomUserSerializer(UserSerializer):
 
     is_subscribed = SerializerMethodField()
 
@@ -29,7 +29,7 @@ class ExtendedUserSerializer(UserSerializer):
                                         author=obj.id).exists()
 
 
-class ExtendedUserCreateSerializer(UserCreateSerializer):
+class CustomUserCreateSerializer(UserCreateSerializer):
 
     class Meta:
         model = User
@@ -77,7 +77,8 @@ class SubscribeSerializer(ModelSerializer):
                                         author=obj.author.id).exists()
 
     def get_recipes_count(self, obj):
-        return obj.recipes.count()
+        return Recipe.objects.filter(author=obj.author.id).count()
+        # return obj.recipes.count()
 
     def get_recipes(self, obj):
         request = self.context.get('request')
@@ -115,7 +116,7 @@ class RecipeIngredientSerializer(ModelSerializer):
 
 class RecipeReadSerializer(ModelSerializer):
     tags = TagSerializer(read_only=True, many=True)
-    author = ExtendedUserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
     ingredients = RecipeIngredientSerializer(source='ingredienttorecipe',
                                              read_only=True,
                                              many=True)
@@ -155,7 +156,7 @@ class RecipeSerializer(ModelSerializer):
     ingredients = RecipeIngredientSerializer(many=True)
     tags = PrimaryKeyRelatedField(many=True,
                                   queryset=Tag.objects.all())
-    author = ExtendedUserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
     image = Base64ImageField()
 
     class Meta:
