@@ -1,41 +1,30 @@
+from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
+from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingCart, Tag)
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.viewsets import (ModelViewSet,
-                                     ReadOnlyModelViewSet)
-
-from django.contrib.auth import get_user_model
-from recipes.models import (Favorite,
-                            Ingredient,
-                            Recipe,
-                            RecipeIngredient,
-                            ShoppingCart,
-                            Tag)
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from users.models import Subscribe
 
-from api.serializers import (CustomUserCreateSerializer,
-                             CustomUserSerializer,
-                             FavoriteSerializer,
-                             IngredientSerializer,
-                             RecipeReadSerializer,
-                             RecipeSerializer,
-                             ShoppingCartSerializer,
-                             SubscribeSerializer,
-                             TagSerializer)
-from api.filters import (IngredientSearchFilter,
-                         AuthorTagFilter)
+from api.filters import AuthorTagFilter, IngredientSearchFilter
 from api.paginations import LimitPageNumberPagination
 from api.permissions import IsAuthorOrReadOnly
-
+from api.serializers import (CustomUserCreateSerializer, CustomUserSerializer,
+                             FavoriteSerializer, IngredientSerializer,
+                             RecipeReadSerializer, RecipeSerializer,
+                             ShoppingCartSerializer, SubscribeSerializer,
+                             TagSerializer)
 
 User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
+
     queryset = User.objects.all()
     serializer_class = CustomUserCreateSerializer
     pagination_class = LimitPageNumberPagination
@@ -83,11 +72,13 @@ class CustomUserViewSet(UserViewSet):
 
 
 class TagViewSet(ReadOnlyModelViewSet):
+
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
 
 class IngredientViewSet(ReadOnlyModelViewSet):
+
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = (IngredientSearchFilter,)
@@ -95,6 +86,7 @@ class IngredientViewSet(ReadOnlyModelViewSet):
 
 
 class RecipeViewSet(ModelViewSet):
+
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = [IsAuthorOrReadOnly]
