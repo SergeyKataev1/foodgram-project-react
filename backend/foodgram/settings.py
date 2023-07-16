@@ -90,7 +90,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'users.ExtendedUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -122,9 +122,9 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
 
     "SERIALIZERS": {
-        "user_create": "api.serializers.CustomUserCreateSerializer",
-        "user": "api.serializers.CustomUserSerializer",
-        "current_user": "api.serializers.CustomUserSerializer",
+        "user_create": "api.serializers.ExtendedUserCreateSerializer",
+        "user": "api.serializers.ExtendedUserSerializer",
+        "current_user": "api.serializers.ExtendedUserSerializer",
     },
 
     "PERMISSIONS": {

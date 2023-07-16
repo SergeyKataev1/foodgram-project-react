@@ -14,7 +14,8 @@ from users.models import Subscribe
 from api.filters import AuthorTagFilter, IngredientSearchFilter
 from api.paginations import LimitPageNumberPagination
 from api.permissions import IsAuthorOrReadOnly
-from api.serializers import (CustomUserCreateSerializer, CustomUserSerializer,
+from api.serializers import (ExtendedUserCreateSerializer,
+                             ExtendedUserSerializer,
                              FavoriteSerializer, IngredientSerializer,
                              RecipeReadSerializer, RecipeSerializer,
                              ShoppingCartSerializer, SubscribeSerializer,
@@ -23,15 +24,15 @@ from api.serializers import (CustomUserCreateSerializer, CustomUserSerializer,
 User = get_user_model()
 
 
-class CustomUserViewSet(UserViewSet):
+class ExtendedUserViewSet(UserViewSet):
 
     queryset = User.objects.all()
-    serializer_class = CustomUserCreateSerializer
+    serializer_class = ExtendedUserCreateSerializer
     pagination_class = LimitPageNumberPagination
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve']:
-            return CustomUserSerializer
+            return ExtendedUserSerializer
         return super().get_serializer_class()
 
     @action(detail=True, methods=['POST', 'DELETE'])

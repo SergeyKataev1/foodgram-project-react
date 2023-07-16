@@ -3,7 +3,7 @@ from django.db import models
 from rest_framework.validators import ValidationError
 
 
-class CustomUser(AbstractUser):
+class ExtendedUser(AbstractUser):
 
     email = models.EmailField(max_length=254, unique=True)
     username = models.CharField(max_length=254, unique=True)
@@ -22,10 +22,10 @@ class CustomUser(AbstractUser):
 
 class Subscribe(models.Model):
 
-    user = models.ForeignKey(CustomUser,
+    user = models.ForeignKey(ExtendedUser,
                              on_delete=models.CASCADE,
                              related_name='subscriber')
-    author = models.ForeignKey(CustomUser,
+    author = models.ForeignKey(ExtendedUser,
                                on_delete=models.CASCADE,
                                related_name='author')
 
