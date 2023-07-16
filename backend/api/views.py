@@ -15,11 +15,10 @@ from api.filters import AuthorTagFilter, IngredientSearchFilter
 from api.paginations import LimitPageNumberPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (ExtendedUserCreateSerializer,
-                             ExtendedUserSerializer,
-                             FavoriteSerializer, IngredientSerializer,
-                             RecipeReadSerializer, RecipeSerializer,
-                             ShoppingCartSerializer, SubscribeSerializer,
-                             TagSerializer)
+                             ExtendedUserSerializer, FavoriteSerializer,
+                             IngredientSerializer, RecipeReadSerializer,
+                             RecipeSerializer, ShoppingCartSerializer,
+                             SubscribeSerializer, TagSerializer)
 
 User = get_user_model()
 
