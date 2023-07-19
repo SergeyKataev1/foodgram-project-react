@@ -29,8 +29,6 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
 ```
 - Cоздайте .env файл и впишите:
 ```
-DB_ENGINE=<django.db.backends.postgresql>
-DB_NAME=<имя базы данных postgres>
 DB_USER=<пользователь бд>
 DB_PASSWORD=<пароль>
 DB_HOST=<db>
@@ -63,6 +61,7 @@ sudo docker-compose exec backend python manage.py load_data
 sudo docker-compose exec backend python manage.py createsuperuser
 ```
 Проект будет доступен по открытому IP вашего сервера.
+158.160.72.66
 
 - Данные админки:
 ```
