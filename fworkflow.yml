@@ -3,9 +3,9 @@ name: Django-app workflow
 on: [push]
 
 jobs:
+    
     tests:
       runs-on: ubuntu-latest
-  
       steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -65,8 +65,6 @@ jobs:
             key: ${{ secrets.SSH_KEY }}
             passphrase: ${{ secrets.PASSPHRASE }}
             script: |
-              sudo systemctl stop nginx 
-              sudo systemctl stop gunicorn
               cd infra/
               sudo rm .env
               sudo touch .env
@@ -77,13 +75,13 @@ jobs:
               echo DB_HOST=${{ secrets.DB_HOST }} >> .env
               echo DB_PORT=${{ secrets.DB_PORT }} >> .env
 
-              sudo docker-compose stop
-              sudo docker-compose rm backend
+              sudo docker compose stop
+              sudo docker compose rm backend
               sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-backend
               sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
-              sudo docker-compose up -d --build
-              sudo docker-compose exec -T backend python manage.py collectstatic --no-input
-              sudo docker-compose exec -T backend python manage.py makemigrations users
-              sudo docker-compose exec -T backend python manage.py makemigrations recipes
-              sudo docker-compose exec -T backend python manage.py migrate
-              sudo docker-compose exec -T backend python manage.py migrate recipes
+
+              sudo docker compose -f docker-compose.yml down
+              sudo docker compose -f docker-compose.yml up -d
+              sudo docker compose -f docker-compose.yml exec backend python manage.py migrate
+              sudo docker compose -f docker-compose.yml exec backend python manage.py collectstatic
+              sudo docker compose -f docker-compose.yml exec backend cp -r /app/collected_static/. /backend_static/static/
