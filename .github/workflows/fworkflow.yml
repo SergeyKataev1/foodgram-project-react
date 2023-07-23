@@ -68,6 +68,15 @@ jobs:
            target: "infra"
            source: "infra/nginx.conf"
            target: "infra"
+        - name: Copy nginx.conf
+          uses: appleboy/scp-action@master
+          with:
+           host: ${{ secrets.HOST }}
+           username: ${{ secrets.USER }}
+           key: ${{ secrets.SSH_KEY }}
+           passphrase: ${{ secrets.SSH_PASSPHRASE }}
+           source: "infra/nginx.conf"
+           target: "infra"
         - name: Executing remote ssh commands to deploy
           uses: appleboy/ssh-action@master
           with:
