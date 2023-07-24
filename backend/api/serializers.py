@@ -1,18 +1,19 @@
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
-from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
-                            ShoppingCart, Tag)
 from rest_framework.serializers import (IntegerField, ModelSerializer,
                                         PrimaryKeyRelatedField, ReadOnlyField,
                                         SerializerMethodField)
 from rest_framework.validators import ValidationError
+
+from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingCart, Tag)
 from users.models import Subscribe
 
 User = get_user_model()
 
 
-class ExtendedUserSerializer(UserSerializer):
+class CustomUserSerializer(UserSerializer):
 
     is_subscribed = SerializerMethodField()
 
@@ -29,7 +30,7 @@ class ExtendedUserSerializer(UserSerializer):
                                         author=obj.id).exists()
 
 
-class ExtendedUserCreateSerializer(UserCreateSerializer):
+class CustomUserCreateSerializer(UserCreateSerializer):
 
     class Meta:
         model = User
@@ -117,7 +118,7 @@ class RecipeIngredientSerializer(ModelSerializer):
 class RecipeReadSerializer(ModelSerializer):
 
     tags = TagSerializer(read_only=True, many=True)
-    author = ExtendedUserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
     ingredients = RecipeIngredientSerializer(source='ingredienttorecipe',
                                              read_only=True,
                                              many=True)
@@ -158,7 +159,7 @@ class RecipeSerializer(ModelSerializer):
     ingredients = RecipeIngredientSerializer(many=True)
     tags = PrimaryKeyRelatedField(many=True,
                                   queryset=Tag.objects.all())
-    author = ExtendedUserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
     image = Base64ImageField()
 
     class Meta:

@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -94,7 +94,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = 'users.ExtendedUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -126,9 +126,9 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
 
     "SERIALIZERS": {
-        "user_create": "api.serializers.ExtendedUserCreateSerializer",
-        "user": "api.serializers.ExtendedUserSerializer",
-        "current_user": "api.serializers.ExtendedUserSerializer",
+        "user_create": "api.serializers.CustomUserCreateSerializer",
+        "user": "api.serializers.CustomUserSerializer",
+        "current_user": "api.serializers.CustomUserSerializer",
     },
 
     "PERMISSIONS": {

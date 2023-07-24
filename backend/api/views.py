@@ -3,35 +3,35 @@ from django.db.models import Sum
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
-from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
-                            ShoppingCart, Tag)
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from users.models import Subscribe
 
 from api.filters import AuthorTagFilter, IngredientSearchFilter
 from api.paginations import LimitPageNumberPagination
 from api.permissions import IsAuthorOrReadOnly
-from api.serializers import (ExtendedUserCreateSerializer,
-                             ExtendedUserSerializer, FavoriteSerializer,
-                             IngredientSerializer, RecipeReadSerializer,
-                             RecipeSerializer, ShoppingCartSerializer,
-                             SubscribeSerializer, TagSerializer)
+from api.serializers import (CustomUserCreateSerializer, CustomUserSerializer,
+                             FavoriteSerializer, IngredientSerializer,
+                             RecipeReadSerializer, RecipeSerializer,
+                             ShoppingCartSerializer, SubscribeSerializer,
+                             TagSerializer)
+from recipes.models import (Favorite, Ingredient, Recipe, RecipeIngredient,
+                            ShoppingCart, Tag)
+from users.models import Subscribe
 
 User = get_user_model()
 
 
-class ExtendedUserViewSet(UserViewSet):
+class CustomUserViewSet(UserViewSet):
 
     queryset = User.objects.all()
-    serializer_class = ExtendedUserCreateSerializer
+    serializer_class = CustomUserCreateSerializer
     pagination_class = LimitPageNumberPagination
 
     def get_serializer_class(self):
         if self.action in ['list', 'retrieve']:
-            return ExtendedUserSerializer
+            return CustomUserSerializer
         return super().get_serializer_class()
 
     @action(detail=True, methods=['POST', 'DELETE'])

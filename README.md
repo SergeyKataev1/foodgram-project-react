@@ -27,13 +27,15 @@ sudo chmod +x /usr/local/bin/docker-compose
 scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
 scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
 ```
-- Cоздайте .env файл и впишите:
+- Cоздайте .env файл c переменными:
 ```
 DB_USER=<пользователь бд>
 DB_PASSWORD=<пароль>
 DB_HOST=<db>
 DB_PORT=<5432>
 SECRET_KEY=<секретный ключ проекта django>
+```
+- ВНИМАНИЕ! Если у вас несколько проектов на сервере, не забудьте настроить внешний NGINX!
 ```
 - Теперь проект можно запустить на сервере:
 ```
@@ -43,10 +45,8 @@ sudo docker-compose up -d --build
 Для корректной работы бекенда необходимо выполнить следующие операции:
 - Выполнить миграции для приложений users и recipes:
 ```
-sudo docker-compose exec backend python manage.py makemigrations users
-sudo docker-compose exec backend python manage.py makemigrations recipes
-sudo docker-compose exec backend python manage.py migrate
-sudo docker-compose exec backend python manage.py makemigrations recipes
+sudo docker compose exec backend python manage.py makemigrations
+sudo docker compose exec backend python manage.py migrate
 ```
 - Собрать необходимые статические файлы:
 ```
@@ -54,14 +54,14 @@ sudo docker-compose exec backend python manage.py collectstatic --no-input
 ```
 - Добавить данные об ингредиентах и тегах из заранее заготовленных файлов (по желанию):
 ```
-sudo docker-compose exec backend python manage.py load_data
+sudo docker compose exec backend python manage.py load_data
 ```
 - Создать суперпользователя Django:
 ```
-sudo docker-compose exec backend python manage.py createsuperuser
+sudo docker compose exec backend python manage.py createsuperuser
 ```
 Проект будет доступен по открытому IP вашего сервера.
-158.160.72.66
+158.160.72.66:80
 
 - Данные админки:
 ```
