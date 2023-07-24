@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:13.0
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - db_data:/var/lib/postgresql/data/
     env_file:
@@ -13,6 +13,8 @@ services:
 
   backend:
     image: sergeykataev1/foodgram-backend
+    ports:
+      - 8000:80
     restart: always
     volumes:
       - static_value:/backend/static/
