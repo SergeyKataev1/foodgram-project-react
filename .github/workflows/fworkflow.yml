@@ -88,6 +88,7 @@ jobs:
             sudo touch .env
             sudo chmod 666 .env
             
+            sudo echo HOST=${{ secrets.HOST }} >> .env
             sudo echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
             sudo echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             sudo echo DB_HOST=${{ secrets.DB_HOST }} >> .env
@@ -101,3 +102,4 @@ jobs:
             sudo docker compose pull frontend
             
             sudo docker compose up -d --build
+            sudo docker system prune

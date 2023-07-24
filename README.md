@@ -1,6 +1,6 @@
 # FOODGRAM
 
-FOODGRAM это сайт для размещения и поиска рецептов.
+FOODGRAM это сайт для размещения и поиска рецептов и дипломный проект ЯП.
 
 ### Технологии:
 
@@ -24,8 +24,8 @@ sudo chmod +x /usr/local/bin/docker-compose
 - Локально отредактируйте файл infra/nginx.conf и в строке server_name впишите свой IP.
 - Скопируйте файлы docker-compose.yml и nginx.conf из директории infra на сервер:
 ```
-scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
-scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
+scp -i c:/vm_access/<SSH_key_file> docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
+scp -i c:/vm_access/<SSH_key_file> nginx.conf <username>@<host>:/home/<username>/nginx.conf
 ```
 - Cоздайте .env файл c переменными:
 ```
@@ -35,8 +35,6 @@ DB_HOST=<db>
 DB_PORT=<5432>
 SECRET_KEY=<секретный ключ проекта django>
 ```
-- ВНИМАНИЕ! Если у вас несколько проектов на сервере, не забудьте настроить внешний NGINX!
-```
 - Теперь проект можно запустить на сервере:
 ```
 sudo docker-compose up -d --build 
@@ -45,14 +43,15 @@ sudo docker-compose up -d --build
 Для корректной работы бекенда необходимо выполнить следующие операции:
 - Выполнить миграции для приложений users и recipes:
 ```
-sudo docker compose exec backend python manage.py makemigrations
-sudo docker compose exec backend python manage.py migrate
+sudo docker-compose exec backend python manage.py makemigrations users
+sudo docker-compose exec backend python manage.py makemigrations recipes
+sudo docker-compose exec backend python manage.py migrate
 ```
-- Собрать необходимые статические файлы:
+- Собрать статические файлы:
 ```
 sudo docker-compose exec backend python manage.py collectstatic --no-input
 ```
-- Добавить данные об ингредиентах и тегах из заранее заготовленных файлов (по желанию):
+- Добавить данные об ингредиентах и тегах из заранее заготовленных файлов (для тестов):
 ```
 sudo docker compose exec backend python manage.py load_data
 ```
@@ -60,8 +59,10 @@ sudo docker compose exec backend python manage.py load_data
 ```
 sudo docker compose exec backend python manage.py createsuperuser
 ```
-Проект будет доступен по открытому IP вашего сервера.
+- Проект будет доступен по открытому IP сервера:
+```
 158.160.72.66:80
+```
 
 - Данные админки:
 ```
@@ -69,3 +70,4 @@ sudo docker compose exec backend python manage.py createsuperuser
 Email: admin@admin.com
 Пароль: SergeyKataev1
 ```
+- P.S. Если на сервере больше одного проекта, настройте внешний NGINX.
