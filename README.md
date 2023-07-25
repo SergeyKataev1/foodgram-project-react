@@ -12,7 +12,7 @@ Python, Django, Docker, Gunicorn, NGINX, PostgreSQL.
 ```
 https://github.com/SergeyKataev1/foodgram-project-react.git
 ```
-- На удаленном сервере необходимо произвести установку необходимых пакетов для docker и docker-compose:
+- На удаленном сервере необходимо произвести установку пакетов для docker и docker-compose:
 ```
 sudo apt update
 sudo apt install curl
@@ -64,7 +64,7 @@ sudo docker compose exec backend python manage.py createsuperuser
 ```
 - Проект будет доступен по открытому IP сервера:
 ```
-158.160.72.66:80
+158.160.72.66
 ```
 
 - Данные админки:
