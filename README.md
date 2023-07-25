@@ -13,13 +13,16 @@ Python, Django, Docker, Gunicorn, NGINX, PostgreSQL.
 https://github.com/SergeyKataev1/foodgram-project-react.git
 ```
 - На удаленном сервере необходимо произвести установку необходимых пакетов для docker и docker-compose:
-
 ```
-sudo apt install docker.io 
+sudo apt update
+sudo apt install curl
+curl -fSL https://get.docker.com -o get-docker.sh
+sudo sh ./get-docker.sh
+sudo apt-get install docker-compose-plugin
 ```
+- Проверим Docker:
 ```
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+sudo systemctl status docker 
 ```
 - Локально отредактируйте файл infra/nginx.conf и в строке server_name впишите свой IP.
 - Скопируйте файлы docker-compose.yml и nginx.conf из директории infra на сервер:
@@ -37,23 +40,23 @@ SECRET_KEY=<секретный ключ проекта django>
 ```
 - Теперь проект можно запустить на сервере:
 ```
-sudo docker-compose up -d --build 
+sudo docker compose up -d --build 
 ```
 ### Настройка бекенда:
 Для корректной работы бекенда необходимо выполнить следующие операции:
 - Выполнить миграции для приложений users и recipes:
 ```
-sudo docker-compose exec backend python manage.py makemigrations users
-sudo docker-compose exec backend python manage.py makemigrations recipes
-sudo docker-compose exec backend python manage.py migrate
+sudo docker compose exec backend python manage.py makemigrations users
+sudo docker compose exec backend python manage.py makemigrations recipes
+sudo docker compose exec backend python manage.py migrate
 ```
 - Собрать статические файлы:
 ```
-sudo docker-compose exec backend python manage.py collectstatic --no-input
+sudo docker compose exec backend python manage.py collectstatic --no-input
 ```
 - Добавить данные об ингредиентах и тегах из заранее заготовленных файлов (для тестов):
 ```
-sudo docker compose exec backend python manage.py load_data
+sudo docker compose exec backend python manage.py load_data_json
 ```
 - Создать суперпользователя Django:
 ```
