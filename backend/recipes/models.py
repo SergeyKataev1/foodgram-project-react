@@ -32,7 +32,7 @@ class Tag(models.Model):
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 
@@ -53,7 +53,7 @@ class Ingredient(models.Model):
             )
         ]
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
 
@@ -81,6 +81,9 @@ class Recipe(models.Model):
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
+    def __str__(self):
+        return self.name
+
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe,
@@ -101,10 +104,7 @@ class RecipeIngredient(models.Model):
         ]
 
     def __str__(self):
-        return (
-            f'{self.ingredient.name} ({self.ingredient.measurement_unit})'
-            f' - {self.amount} '
-        )
+        return self.recipe
 
 
 class FavoriteAndShoppingCart(models.Model):
@@ -128,7 +128,7 @@ class FavoriteAndShoppingCart(models.Model):
 class Favorite(FavoriteAndShoppingCart):
 
     def __str__(self):
-        return f'{self.user} добавил "{self.recipe.ingredients}" в Избранное'
+        return f'{self.user} добавил "{self.recipe}" в Избранное'
 
     class Meta(FavoriteAndShoppingCart.Meta):
         default_related_name = 'favorite'
@@ -137,6 +137,9 @@ class Favorite(FavoriteAndShoppingCart):
 
 
 class ShoppingCart(FavoriteAndShoppingCart):
+
+    def __str__(self):
+        return f'{self.user} добавил "{self.recipe}" в Корзину покупок'
 
     class Meta(FavoriteAndShoppingCart.Meta):
         default_related_name = 'shoppingcart'
