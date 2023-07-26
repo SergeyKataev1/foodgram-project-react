@@ -46,4 +46,4 @@ class Subscribe(models.Model):
             raise ValidationError('error: Подписка на самого себя запрещена')
 
     def __str__(self):
-        return f'{self.user} добавил "{self.author}"'
+        return f'{self.user} добавил "{self.author}"в подписки'
