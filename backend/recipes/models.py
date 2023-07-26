@@ -70,8 +70,9 @@ class Recipe(models.Model):
                             max_length=1024)
     ingredients = models.ManyToManyField(Ingredient,
                                          through='RecipeIngredient',
-                                         verbose_name='ингредиенты')
-    tags = models.ManyToManyField(Tag)
+                                         verbose_name='Ингредиенты')
+    tags = models.ManyToManyField(Tag,
+                                  verbose_name='Теги')
     cooking_time = models.IntegerField(
         verbose_name='Время приготовления в минутах',
         validators=[MinValueValidator(1)])
@@ -85,13 +86,15 @@ class Recipe(models.Model):
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe,
                                on_delete=models.CASCADE,
-                               related_name='ingredienttorecipe')
+                               related_name='ingredienttorecipe',
+                               verbose_name='Рецепт')
     ingredient = models.ForeignKey(Ingredient,
-                                   on_delete=models.CASCADE)
-    amount = models.IntegerField(validators=[
-        MinValueValidator(1,
-                          message='Мин. количество ингредиента < 1')
-    ])
+                                   on_delete=models.CASCADE,
+                                   verbose_name='Ингредиент')
+    amount = models.IntegerField(
+        verbose_name='Колличество',
+        validators=[MinValueValidator(
+            1, message='Мин. количество ингредиента < 1')])
 
     class Meta:
         ordering = ('id',)
@@ -105,9 +108,11 @@ class RecipeIngredient(models.Model):
 
 class FavoriteAndShoppingCart(models.Model):
     user = models.ForeignKey(User,
-                             on_delete=models.CASCADE)
+                             on_delete=models.CASCADE,
+                             verbose_name='Пользователь')
     recipe = models.ForeignKey(Recipe,
-                               on_delete=models.CASCADE)
+                               on_delete=models.CASCADE,
+                               verbose_name='Рецепт')
 
     class Meta:
         abstract = True
