@@ -60,6 +60,7 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
+                               verbose_name='Автор',
                                related_name='recipes')
     name = models.CharField(verbose_name='Название',
                             max_length=200)
@@ -98,6 +99,12 @@ class RecipeIngredient(models.Model):
                 name='ingredienttorecipe_unique'
             )
         ]
+
+    def __str__(self):
+        return (
+            f'{self.ingredient.name} ({self.ingredient.measurement_unit})'
+            f' - {self.amount} '
+        )
 
 
 class FavoriteAndShoppingCart(models.Model):
