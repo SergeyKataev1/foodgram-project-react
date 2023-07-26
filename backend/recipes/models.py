@@ -128,7 +128,7 @@ class FavoriteAndShoppingCart(models.Model):
 class Favorite(FavoriteAndShoppingCart):
 
     def __str__(self):
-        return f'{self.user} добавил "{self.recipe}" в Избранное'
+        return f'{self.user} добавил "{self.recipe.ingredients}" в Избранное'
 
     class Meta(FavoriteAndShoppingCart.Meta):
         default_related_name = 'favorite'
