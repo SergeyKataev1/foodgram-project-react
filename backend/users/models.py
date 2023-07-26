@@ -24,20 +24,22 @@ class Subscribe(models.Model):
 
     user = models.ForeignKey(CustomUser,
                              on_delete=models.CASCADE,
+                             verbose_name='Подписчик',
                              related_name='subscriber')
     author = models.ForeignKey(CustomUser,
                                on_delete=models.CASCADE,
+                               verbose_name='Автор',
                                related_name='author')
 
     class Meta:
-        verbose_name = 'Подписка'
-        verbose_name_plural = 'Подписки'
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'author'],
                 name='subscribe_unique'
             )
         ]
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
 
     def clean(self):
         if self.user == self.author:
