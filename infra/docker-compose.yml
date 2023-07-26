@@ -9,6 +9,7 @@ services:
       - db_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
+    restart: always
 
 
   backend:
@@ -23,6 +24,7 @@ services:
       - db
     env_file:
       - ./.env
+    restart: always
 
 
   frontend:
@@ -46,6 +48,7 @@ services:
     depends_on:
       - backend
       - frontend
+    restart: always
 
 volumes:
   db_data:
