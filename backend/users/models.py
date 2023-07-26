@@ -44,3 +44,6 @@ class Subscribe(models.Model):
     def clean(self):
         if self.user == self.author:
             raise ValidationError('error: Подписка на самого себя запрещена')
+
+    def __str__(self):
+        return f'{self.user} добавил "{self.author}"'
