@@ -60,7 +60,8 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
-                               related_name='recipes')
+                               related_name='recipes',
+                               verbose_name='Автор')
     name = models.CharField(verbose_name='Название',
                             max_length=200)
     image = models.ImageField(verbose_name='Изображение',
@@ -68,7 +69,8 @@ class Recipe(models.Model):
     text = models.CharField(verbose_name='Текст',
                             max_length=1024)
     ingredients = models.ManyToManyField(Ingredient,
-                                         through='RecipeIngredient')
+                                         through='RecipeIngredient',
+                                         verbose_name='ингредиенты')
     tags = models.ManyToManyField(Tag)
     cooking_time = models.IntegerField(
         verbose_name='Время приготовления в минутах',
