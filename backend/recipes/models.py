@@ -104,7 +104,10 @@ class RecipeIngredient(models.Model):
         ]
 
     def __str__(self):
-        return self.recipe
+        return (
+            f'{self.ingredient.name} ({self.ingredient.measurement_unit})'
+            f' - {self.amount} '
+        )
 
 
 class FavoriteAndShoppingCart(models.Model):
