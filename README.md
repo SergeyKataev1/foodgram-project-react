@@ -67,7 +67,7 @@ sudo docker compose exec backend python manage.py createsuperuser
 158.160.72.66
 ```
 
-- Данные админки:
+- Данные суперюзера:
 ```
 Логин: SergeyKataev1
 Email: admin@admin.com
