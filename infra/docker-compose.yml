@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   db:
-    image: postgres:13.0
+    image: postgres:15.3
     ports:
       - 5432:5432
     volumes:
@@ -34,7 +34,7 @@ services:
 
 
   nginx:
-    image: nginx:1.22.1
+    image: nginx:1.25.1
     ports:
       - 80:80
     volumes:
