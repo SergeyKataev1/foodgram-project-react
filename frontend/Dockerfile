@@ -1,4 +1,4 @@
-FROM node:13.12.0 as build
+FROM node:13.12.0-slim as build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
