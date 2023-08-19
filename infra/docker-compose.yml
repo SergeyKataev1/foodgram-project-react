@@ -20,7 +20,7 @@ services:
       - static_value:/backend/static/
       - media_value:/backend/media/
     depends_on:
-      - db
+      # - db
     env_file:
       - ./.env
 
@@ -30,7 +30,7 @@ services:
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
-      - db
+      # - db
 
 
   nginx:
